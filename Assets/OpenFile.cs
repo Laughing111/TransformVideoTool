@@ -33,6 +33,20 @@ public class OpenFile  {
 }
 
 
+[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+public class OpenDialogDir
+{
+    public IntPtr hwndOwner = IntPtr.Zero;
+    public IntPtr pidlRoot = IntPtr.Zero;
+    public String pszDisplayName = null;
+    public String lpszTitle = null;
+    public UInt32 ulFlags = 0;
+    public IntPtr lpfn = IntPtr.Zero;
+    public IntPtr lParam = IntPtr.Zero;
+    public int iImage = 0;
+}
+
+
 public class LocalDialog
 {
     //链接指定系统函数       打开文件对话框
@@ -52,7 +66,7 @@ public static bool GetSFN([In, Out] OpenFile ofn)
 }
 
 [DllImport("shell32.dll", SetLastError = true, ThrowOnUnmappableChar = true, CharSet = CharSet.Auto)]
-public static extern IntPtr SHBrowseForFolder([In, Out] OpenFile ofn);
+public static extern IntPtr SHBrowseForFolder([In, Out] OpenDialogDir ofn);
 
 
 [DllImport("shell32.dll", SetLastError = true, ThrowOnUnmappableChar = true, CharSet = CharSet.Auto)]
