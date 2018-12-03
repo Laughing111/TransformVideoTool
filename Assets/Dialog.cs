@@ -63,11 +63,12 @@ public class Dialog : MonoBehaviour {
             ShellManager.inUrl = openFile.file;
             sm.ChooseFolderAgument(false);
             isPNG.SetActive(true);
-            InNote.text = "选择视频为：";
-            Start.text = "开始转换";
-            Save.text = "保存为";
-            inin.transform.localPosition = new Vector3(120, inin.transform.localPosition.y, inin.transform.localPosition.z);
+           
         }
+        InNote.text = "选择视频为：";
+        Start.text = "开始转换";
+        Save.text = "存储为";
+        inin.transform.localPosition = new Vector3(120, inin.transform.localPosition.y, inin.transform.localPosition.z);
     }
 
 

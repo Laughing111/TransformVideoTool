@@ -75,8 +75,17 @@ public class ShellManager : MonoBehaviour
     }
     public void Update()
     {
-        inText.text = inUrl;
-        outText.text = outUrl+"."+ OutVideoType.ToString();
+        
+        if (isChooseFolder)
+        {
+            inText.text = inUrl+ "*." + InVideoType.ToString();
+            outText.text = outUrl + "*." + OutVideoType.ToString();
+        }
+        else {
+            inText.text = inUrl;
+            outText.text = outUrl +"."+ OutVideoType.ToString();
+        }
+        
         pngText.text = pngUrl;
         status.text = Sstatus;
         if (isTrans)
