@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Dialog : MonoBehaviour {
 
     public ShellManager sm;
+    public Text InNote;
+    public GameObject inin;
+    public Text Start;
+    public Text Save;
+    public GameObject isPNG;
 
     public void OutPut()
     {
@@ -56,6 +62,11 @@ public class Dialog : MonoBehaviour {
             Debug.Log(openFile.file);
             ShellManager.inUrl = openFile.file;
             sm.ChooseFolderAgument(false);
+            isPNG.SetActive(true);
+            InNote.text = "选择视频为：";
+            Start.text = "开始转换";
+            Save.text = "保存为";
+            inin.transform.localPosition = new Vector3(120, inin.transform.localPosition.y, inin.transform.localPosition.z);
         }
     }
 
@@ -76,10 +87,16 @@ public class Dialog : MonoBehaviour {
         string fullDirPath = new string(charArray);
         fullDirPath = fullDirPath.Substring(0, fullDirPath.IndexOf('\0'));
         Debug.Log(fullDirPath);
-        if(IN)
+        InNote.text = "视频格式为：";
+        Start.text = "开始批量转换";
+        Save.text = "输出至";
+        isPNG.SetActive(false);
+        inin.transform.localPosition = new Vector3(231, inin.transform.localPosition.y, inin.transform.localPosition.z);
+        if (IN)
         {
             ShellManager.inUrl = fullDirPath;
             sm.ChooseFolderAgument(true);
+            
         }
         else
         {

@@ -22,6 +22,12 @@ public class ShellManager : MonoBehaviour
     private string Sstatus;
     private string OutArgument;
     public bool isChooseFolder;
+    public Toggle needPNG;
+    public Button btnTrans;
+    public Button btnChooseFile;
+    public Button btnChooseFolder;
+    public Button btnSave;
+    private bool isTrans;
      
 
 
@@ -70,9 +76,24 @@ public class ShellManager : MonoBehaviour
     public void Update()
     {
         inText.text = inUrl;
-        outText.text = outUrl;
+        outText.text = outUrl+"."+ OutVideoType.ToString();
         pngText.text = pngUrl;
-        status.text = Sstatus; 
+        status.text = Sstatus;
+        if (isTrans)
+        {
+            needPNG.interactable = false;
+            btnTrans.interactable = false;
+            btnChooseFile.interactable = false;
+            btnChooseFolder.interactable = false;
+            btnSave.interactable = false;
+        }
+        else {
+            needPNG.interactable = true;
+            btnTrans.interactable = true;
+            btnChooseFile.interactable = true;
+            btnChooseFolder.interactable = true;
+            btnSave.interactable = true;
+        }
     }
 
     public void btn()
@@ -99,19 +120,36 @@ public class ShellManager : MonoBehaviour
 
     public void Transform()
     {
+        isTrans = true;
         if (!isChooseFolder)
         {
+
             if (!Directory.Exists(pngUrl))
             {
                 Directory.CreateDirectory(pngUrl);
+            }
+            else {
+                ClearFolder(pngUrl);
+                
             }
             Sstatus = "正在转换，请稍后...";
             ExcuteProcess(ffmpegUrl, " -y -i " + inUrl + " -f image2 " + pngUrl + "%03d.png", (s, e) => UnityEngine.Debug.Log(e.Data));
             ExcuteProcess(ffmpegUrl, " -y -f image2 -i " + pngUrl + "%03d.png "+ OutArgument + outUrl + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
             //清空图片缓存文件夹
-            ClearFolder(pngUrl);
+            if (needPNG.isOn == false)
+            {
+                ClearFolder(pngUrl);
+            }
             UnityEngine.Debug.Log("OK");
             Sstatus = "转换成功！";
+            string[] outpath=outUrl.Split('\\');
+            System.Diagnostics.Process.Start("explorer.exe", outUrl.Replace(outpath[outpath.Length-1],""));
+            if (needPNG.isOn)
+            {
+                System.Diagnostics.Process.Start("explorer.exe", pngUrl.Replace("/","\\"));
+                //UnityEngine.Debug.Log(pngUrl.Remove(pngUrl.Length-1,1));
+            }
+           //UnityEngine.Debug.Log(outUrl.Replace(outpath[outpath.Length - 1], ""));
         }
         else
         {    
@@ -130,9 +168,16 @@ public class ShellManager : MonoBehaviour
                 ExcuteProcess(ffmpegUrl, " -y -f image2 -i " + pngUrl + "%03d.png "+ OutArgument + outUrl + "\\" + videoName[i] + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
                 //UnityEngine.Debug.LogError(" -y  -i " + videoPaths[i] + " -f image2 " + pngUrl + "%03d.png。\n" + " -y -i " + pngUrl + "%03d.png " + OutArgument + outUrl + "\\" + videoName[i] + "." + OutVideoType.ToString());
                 ClearFolder(pngUrl);
+                System.Diagnostics.Process.Start("explorer.exe", outUrl);
+                UnityEngine.Debug.Log(outUrl);
             }
             Sstatus = "转换成功!";
         }
+        isTrans = false;
+       
+
+
+
     }
     private List<string> videoPaths;
     private List<string> videoName;
