@@ -39,7 +39,7 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos: []
-  m_VirtualRealitySplashScreen: {fileID: 2800000, guid: fb4ffc12dd6a3f040a05eeaa982447eb,
+  m_VirtualRealitySplashScreen: {fileID: 2800000, guid: 8fa59f6495ded254c97db0763504e762,
     type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
@@ -256,7 +256,7 @@ PlayerSettings:
     height: 180
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
-  resolutionDialogBanner: {fileID: 2800000, guid: fb4ffc12dd6a3f040a05eeaa982447eb,
+  resolutionDialogBanner: {fileID: 2800000, guid: 8fa59f6495ded254c97db0763504e762,
     type: 3}
   m_BuildTargetIcons:
   - m_BuildTarget: 
@@ -565,7 +565,8 @@ PlayerSettings:
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
-  apiCompatibilityLevelPerPlatform: {}
+  apiCompatibilityLevelPerPlatform:
+    Standalone: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: VideoTransform

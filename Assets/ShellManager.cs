@@ -47,6 +47,7 @@ public class ShellManager : MonoBehaviour
     {
         InVideoType = (VideoType.TypeOfVideo)Enum.Parse(typeof(VideoType.TypeOfVideo), txt.text, false);
         //选择输出png序列帧语句
+       
     }
 
     public void ChooseOutType(Text txt)
@@ -143,7 +144,9 @@ public class ShellManager : MonoBehaviour
             }
             Sstatus = "正在转换，请稍后...";
             ExcuteProcess(ffmpegUrl, " -y -i " + inUrl + " -f image2 " + pngUrl + "%03d.png", (s, e) => UnityEngine.Debug.Log(e.Data));
-            ExcuteProcess(ffmpegUrl, " -y -f image2 -i " + pngUrl + "%03d.png "+ OutArgument + outUrl + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
+            ExcuteProcess(ffmpegUrl, "-y -i " + inUrl + " -f wav " + pngUrl + "music.wav", (s, e) => UnityEngine.Debug.Log(e.Data));
+            ExcuteProcess(ffmpegUrl, " -y -f image2 -i " + pngUrl + "%03d.png "+ OutArgument + outUrl + "1." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
+            ExcuteProcess(ffmpegUrl, "-y -i " + pngUrl + "music.wav" + " -i " + outUrl + "1." + OutVideoType.ToString() + " " + outUrl + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
             //清空图片缓存文件夹
             if (needPNG.isOn == false)
             {
