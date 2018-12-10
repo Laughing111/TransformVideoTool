@@ -142,16 +142,17 @@ public class ShellManager : MonoBehaviour
                 ClearFolder(pngUrl);
                 
             }
-            Sstatus = "正在转换，请稍后...";
+            Sstatus = "正在转换，请稍后...(完成后输出文件夹将自动打开，去忙别的吧！)";
             ExcuteProcess(ffmpegUrl, " -y -i " + inUrl + " -f image2 " + pngUrl + "%03d.png", (s, e) => UnityEngine.Debug.Log(e.Data));
             ExcuteProcess(ffmpegUrl, "-y -i " + inUrl + " -f wav " + pngUrl + "music.wav", (s, e) => UnityEngine.Debug.Log(e.Data));
             ExcuteProcess(ffmpegUrl, " -y -f image2 -i " + pngUrl + "%03d.png "+ OutArgument + outUrl + "1." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
-            ExcuteProcess(ffmpegUrl, "-y -i " + pngUrl + "music.wav" + " -i " + outUrl + "1." + OutVideoType.ToString() + " " + outUrl + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
+            ExcuteProcess(ffmpegUrl, "-y -i " + pngUrl + "music.wav" + " -i " + outUrl + "1." + OutVideoType.ToString() + " -acodec copy -vcodec copy " + outUrl + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
             //清空图片缓存文件夹
             if (needPNG.isOn == false)
             {
                 ClearFolder(pngUrl);
             }
+            File.Delete(outUrl + "1." + OutVideoType.ToString());
             UnityEngine.Debug.Log("OK");
             Sstatus = "转换成功！";
             string[] outpath=outUrl.Split('\\');
@@ -175,15 +176,18 @@ public class ShellManager : MonoBehaviour
                 {
                     Directory.CreateDirectory(pngUrl);
                 }
-                Sstatus = "正在转换 " + i.ToString() + "/" + count.ToString() + " ，请稍后...";
+                Sstatus = "正在转换 " + i.ToString() + "/" + count.ToString() + " ，请稍后...(转换完成后输出文件夹将自动为您打开，去忙别的吧！)";
                 ExcuteProcess(ffmpegUrl, " -y -i " + videoPaths[i] + " -f image2 " + pngUrl + "%03d.png", (s, e) => UnityEngine.Debug.Log(e.Data));
-                ExcuteProcess(ffmpegUrl, " -y -f image2 -i " + pngUrl + "%03d.png "+ OutArgument + outUrl + "\\" + videoName[i] + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
+                ExcuteProcess(ffmpegUrl, "-y -i " + videoPaths[i] + " -f wav " + pngUrl + "music.wav", (s, e) => UnityEngine.Debug.Log(e.Data));
+                ExcuteProcess(ffmpegUrl, " -y -f image2 -i " + pngUrl + "%03d.png "+ OutArgument + outUrl + "\\" + videoName[i] + "1." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
+                ExcuteProcess(ffmpegUrl, "-y -i " + pngUrl + "music.wav" + " -i " + outUrl  + "\\" + videoName[i] + "1."+ OutVideoType.ToString() + " -acodec copy -vcodec copy " + outUrl + "\\" + videoName[i] + "." + OutVideoType.ToString(), (s, e) => UnityEngine.Debug.Log(e.Data));
+                File.Delete(outUrl + "\\" + videoName[i] + "1." + OutVideoType.ToString());
                 //UnityEngine.Debug.LogError(" -y  -i " + videoPaths[i] + " -f image2 " + pngUrl + "%03d.png。\n" + " -y -i " + pngUrl + "%03d.png " + OutArgument + outUrl + "\\" + videoName[i] + "." + OutVideoType.ToString());
                 ClearFolder(pngUrl);
-                System.Diagnostics.Process.Start("explorer.exe", outUrl);
-                UnityEngine.Debug.Log(outUrl);
             }
             Sstatus = "转换成功!";
+            System.Diagnostics.Process.Start("explorer.exe", outUrl);
+            UnityEngine.Debug.Log(outUrl);
         }
         isTrans = false;
        
